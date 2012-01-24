@@ -1,0 +1,14 @@
+<GetCard user="APIKEY:423A6417FF294BCA834C|CONSUMER:MYTRAINTICKET|SERVER:ASSERTIS" password="CH4NN3LTUNN3L" agent="64" booker="401268" client="1637" refund="NO">
+<Order id="1000000118" total="18.70" bookingfee="0" deliveryfee="0" plusbus="0" costcentre="Assertis" purchaseorder="PurchaseOrder">
+<Trip type="2-Part Return">
+<Ticket firstclass="NO" price="6.50" description="OFF-PEAK DAY R">
+<OutwardPortion origin="Faversham" destination="Rainham (Kent)" validfrom="2012-01-26 00:00" validuntil="2012-01-26 00:00" operator="SOUTHEASTERN"/>
+<ReturnPortion origin="Rainham (Kent)" destination="Faversham" validfrom="2012-01-26 00:00" validuntil="2012-01-26 00:00" operator="SOUTHEASTERN"/>
+</Ticket>
+<Ticket firstclass="NO" price="3.80" description="PLUSBUS DAY">
+<OutwardPortion origin="Rainham (Kent)" destination="Rainham (Kent)+bus" validfrom="2012-01-26 00:00" validuntil="2012-01-26 00:00" operator=""/>
+</Ticket>
+</Trip>
+<Customer title="Mr" forenames="Daniel" surname="Dyer"/>
+</Order>
+</GetCard>
