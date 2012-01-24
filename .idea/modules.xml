@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/confermaclient.iml" filepath="$PROJECT_DIR$/confermaclient.iml" />
+      <module fileurl="file://$PROJECT_DIR$/confermaconnector.iml" filepath="$PROJECT_DIR$/confermaconnector.iml" />
     </modules>
   </component>
 </project>

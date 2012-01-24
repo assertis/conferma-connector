@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="confermaclient" default="dist" basedir=".">
+<project name="confermaconnector" default="dist" basedir=".">
 
     <description>Java interface to Conferma web service.</description>
 
