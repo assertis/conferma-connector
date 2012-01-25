@@ -3,9 +3,10 @@
   <component name="ChangeListManager">
     <list default="true" readonly="true" id="23e065a2-ff9d-4510-a4de-0d09172c3626" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build.xml" afterPath="$PROJECT_DIR$/build.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/confermaconnector.iml" afterPath="$PROJECT_DIR$/confermaconnector.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/java/main/net/assertis/conferma/ConfermaCLI.java" afterPath="$PROJECT_DIR$/src/java/main/net/assertis/conferma/ConfermaCLI.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/java/main/net/assertis/conferma/ConfermaClient.java" afterPath="$PROJECT_DIR$/src/java/main/net/assertis/conferma/ConfermaClient.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/java/main/net/assertis/conferma/Trip.java" afterPath="$PROJECT_DIR$/src/java/main/net/assertis/conferma/Trip.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test.xml" afterPath="$PROJECT_DIR$/test.xml" />
     </list>
     <ignored path="confermainterface.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -69,28 +70,28 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="workspace.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="18" column="19" selection-start="1415" selection-end="1415" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ConfermaClient.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="ConfermaClient.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/java/main/net/assertis/conferma/ConfermaClient.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="242" column="0" selection-start="10113" selection-end="10113" vertical-scroll-proportion="0.45086706">
+            <state line="88" column="0" selection-start="3621" selection-end="3621" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ConfermaCLI.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="ConfermaCLI.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/java/main/net/assertis/conferma/ConfermaCLI.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="137" column="0" selection-start="6154" selection-end="6154" vertical-scroll-proportion="0.0">
+            <state line="45" column="0" selection-start="1620" selection-end="1620" vertical-scroll-proportion="0.63583815">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="build.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/build.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="46" column="16" selection-start="1969" selection-end="1969" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -181,10 +182,10 @@
         <option value="$PROJECT_DIR$/src/java/main/net/assertis/conferma/TripType.java" />
         <option value="$PROJECT_DIR$/src/java/main/net/assertis/conferma/CardDeployment.java" />
         <option value="$PROJECT_DIR$/src/java/main/net/assertis/conferma/Order.java" />
-        <option value="$PROJECT_DIR$/build.xml" />
         <option value="$PROJECT_DIR$/src/java/main/net/assertis/conferma/Trip.java" />
-        <option value="$PROJECT_DIR$/src/java/main/net/assertis/conferma/ConfermaCLI.java" />
         <option value="$PROJECT_DIR$/src/java/main/net/assertis/conferma/ConfermaClient.java" />
+        <option value="$PROJECT_DIR$/build.xml" />
+        <option value="$PROJECT_DIR$/src/java/main/net/assertis/conferma/ConfermaCLI.java" />
       </list>
     </option>
   </component>
@@ -249,6 +250,24 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="lib" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="runtime" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="confermaconnector" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="confermaconnector" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value=".idea" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -259,13 +278,14 @@
   </component>
   <component name="PropertiesComponent">
     <property name="GoToFile.includeJavaFiles" value="false" />
-    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.last.edited" value="Modules" />
     <property name="OverrideImplement.combined" value="true" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="MemberChooser.sorted" value="false" />
     <property name="options.lastSelected" value="preferences.sourceCode.Wrapping and Braces" />
     <property name="project.structure.side.proportion" value="0.2" />
+    <property name="GoToClass.includeJavaFiles" value="false" />
     <property name="MemberChooser.copyJavadoc" value="false" />
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
     <property name="MemberChooser.showClasses" value="true" />
@@ -404,6 +424,7 @@
     <frame x="0" y="25" width="1378" height="722" extended-state="0" />
     <editor active="true" />
     <layout>
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3298791" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3298791" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -418,7 +439,6 @@
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3298791" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3298791" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
@@ -502,20 +522,6 @@
         <state line="15" column="17" selection-start="294" selection-end="294" vertical-scroll-proportion="0.2601156" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/build.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="35" column="32" selection-start="1559" selection-end="1559" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="18" column="19" selection-start="1415" selection-end="1415" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/java/main/net/assertis/conferma/Order.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="95" column="36" selection-start="2508" selection-end="2508" vertical-scroll-proportion="0.0" />
@@ -553,16 +559,30 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/java/main/net/assertis/conferma/ConfermaCLI.java">
+    <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="137" column="0" selection-start="6154" selection-end="6154" vertical-scroll-proportion="0.0">
+        <state line="13" column="19" selection-start="695" selection-end="695" vertical-scroll-proportion="0.028901733">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/java/main/net/assertis/conferma/ConfermaClient.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="242" column="0" selection-start="10113" selection-end="10113" vertical-scroll-proportion="0.45086706">
+        <state line="88" column="0" selection-start="3621" selection-end="3621" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/build.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="46" column="16" selection-start="1969" selection-end="1969" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/java/main/net/assertis/conferma/ConfermaCLI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="45" column="0" selection-start="1620" selection-end="1620" vertical-scroll-proportion="0.63583815">
           <folding />
         </state>
       </provider>
@@ -625,7 +645,6 @@
             <option name="proportions">
               <list>
                 <option value="0.2" />
-                <option value="0.5" />
               </list>
             </option>
           </splitter-proportions>

@@ -7,11 +7,13 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.stream.XMLStreamException;
 import org.apache.axis2.AxisFault;
+import org.apache.log4j.PropertyConfigurator;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -41,7 +43,8 @@ public class ConfermaCLI
                                                   ParserConfigurationException,
                                                   ParseException
     {
-        configureLogging();
+        boolean logXML = args.length > 0 && args[0].equals("--log-xml");
+        configureLogging(logXML);
 
         readXML();
 
@@ -62,11 +65,29 @@ public class ConfermaCLI
         }
     }
 
-    private static void configureLogging()
+    private static void configureLogging(boolean logXML)
     {
-        // Suppress INFO messages.
-        System.setProperty("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.SimpleLog");
-        System.setProperty("org.apache.commons.logging.simplelog.log.org.apache.axis2", "error");
+        Properties loggingProperties = new Properties();
+        loggingProperties.setProperty("log4j.rootLogger", "WARN, stdout");
+        loggingProperties.setProperty("log4j.appender.stdout", "org.apache.log4j.ConsoleAppender");
+        loggingProperties.setProperty("log4j.appender.stdout.layout", "org.apache.log4j.PatternLayout");
+        loggingProperties.setProperty("log4j.appender.stdout.layout.ConversionPattern", "%d [%t] %-5p %c - %m%n");
+
+        if (logXML)
+        {
+            loggingProperties.setProperty("log4j.logger.httpclient.wire", "DEBUG, R");
+            loggingProperties.setProperty("log4j.additivity.httpclient.wire", "false");
+
+            loggingProperties.setProperty("log4j.appender.R", "org.apache.log4j.RollingFileAppender");
+            loggingProperties.setProperty("log4j.appender.R.File", "axis.log");
+
+            loggingProperties.setProperty("log4j.appender.R.MaxFileSize", "100MB");
+            loggingProperties.setProperty("log4j.appender.R.MaxBackupIndex", "5");
+
+            loggingProperties.setProperty("log4j.appender.R.layout", "org.apache.log4j.PatternLayout");
+            loggingProperties.setProperty("log4j.appender.R.layout.ConversionPattern", "%d [%t] %-5p %c - %m%n");
+        }
+        PropertyConfigurator.configure(loggingProperties);
     }
 
 
