@@ -248,6 +248,13 @@ public class ConfermaClient
             traveller.setSalutation(customer.getTitle());
             traveller.setForename(customer.getForenames());
             traveller.setSurname(customer.getSurname());
+            for (int i = 2; i <= trip.getPassengerCount(); i++)
+            {
+                Traveller unknown = travellers.addNewTraveller();
+                unknown.setSalutation("");
+                unknown.setForename("");
+                unknown.setSurname("Passenger " + i);
+            }
         }
     }
 

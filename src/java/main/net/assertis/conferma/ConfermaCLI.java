@@ -116,6 +116,7 @@ public class ConfermaCLI
     private static Trip readTrip(Element item) throws ParseException
     {
         TripType type = TripType.fromXMLValue(item.getAttributes().getNamedItem("type").getNodeValue());
+        int passengerCount = Integer.parseInt(item.getAttributes().getNamedItem("passengercount").getNodeValue());
         List<Ticket> tickets = new ArrayList<Ticket>();
         List<Person> passengers = new ArrayList<Person>();
         NodeList ticketElements = item.getElementsByTagName("Ticket");
@@ -128,7 +129,7 @@ public class ConfermaCLI
         {
             passengers.add(readPerson((Element) passengerElements.item(i)));
         }
-        return new Trip(type, tickets, passengers);
+        return new Trip(type, tickets, passengerCount, passengers);
     }
 
 
