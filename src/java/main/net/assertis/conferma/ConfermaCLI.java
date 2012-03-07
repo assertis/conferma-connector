@@ -28,13 +28,16 @@ public class ConfermaCLI
 {
     private static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd hh:mm");
 
+    private static String confermaEndpoint;
     private static String confermaUser;
     private static String confermaPassword;
     private static int confermaAgentId;
     private static int confermaBookerId;
     private static int confermaClientId;
-    private static boolean refund;
 
+    private static RequestType requestType;
+
+    private static String message;
     private static Order order;
 
     public static void main(String[] args) throws XMLStreamException,
@@ -48,15 +51,26 @@ public class ConfermaCLI
 
         readXML();
 
-        ConfermaClient client = new ConfermaClient(confermaUser,
+        ConfermaClient client = new ConfermaClient(confermaEndpoint,
+                                                   confermaUser,
                                                    confermaPassword,
                                                    confermaAgentId,
                                                    confermaBookerId,
                                                    confermaClientId);
         try
         {
-            CardDeployment card = refund ? client.getCardForRefund(order) :  client.getCardForPayment(order);
-            System.out.println(card);
+            switch (requestType)
+            {
+                case PURCHASE:
+                    System.out.println(client.getCardForPayment(order));
+                    break;
+                case REFUND:
+                    System.out.println(client.getCardForRefund(order));
+                    break;
+                case PING:
+                    System.out.println(client.ping(message));
+                    break;
+            }
         }
         catch (AxisFault axisFault)
         {
@@ -101,13 +115,24 @@ public class ConfermaCLI
 		DocumentBuilder builder = factory.newDocumentBuilder();
 		Document document = builder.parse(System.in);
         Element root = document.getDocumentElement();
+        confermaEndpoint = root.getAttributes().getNamedItem("endpoint").getNodeValue();
         confermaUser = root.getAttributes().getNamedItem("user").getNodeValue();
         confermaPassword = root.getAttributes().getNamedItem("password").getNodeValue();
         confermaAgentId = Integer.parseInt(root.getAttributes().getNamedItem("agent").getNodeValue());
         confermaBookerId = Integer.parseInt(root.getAttributes().getNamedItem("booker").getNodeValue());
         confermaClientId = Integer.parseInt(root.getAttributes().getNamedItem("client").getNodeValue());
-        refund = root.getAttributes().getNamedItem("refund").getNodeValue().equalsIgnoreCase("YES");
-        order = readOrder((Element) root.getElementsByTagName("Order").item(0));
+        if (root.getTagName().equals("Ping"))
+        {
+            requestType = RequestType.PING;
+            message = root.getAttributes().getNamedItem("message").getNodeValue();
+        }
+        else
+        {
+            requestType = root.getAttributes().getNamedItem("refund").getNodeValue().equalsIgnoreCase("YES")
+                        ? RequestType.REFUND
+                        : RequestType.PURCHASE;
+            order = readOrder((Element) root.getElementsByTagName("Order").item(0));
+        }
     }
 
     private static Order readOrder(Element item) throws ParseException
@@ -176,5 +201,12 @@ public class ConfermaCLI
                            DATE_FORMAT.parse(item.getAttributes().getNamedItem("validfrom").getNodeValue()),
                            DATE_FORMAT.parse(item.getAttributes().getNamedItem("validuntil").getNodeValue()),
                            item.getAttributes().getNamedItem("operator").getNodeValue());
+    }
+
+    private static enum RequestType
+    {
+        PURCHASE,
+        REFUND,
+        PING
     }
 }

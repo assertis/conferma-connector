@@ -43,15 +43,24 @@ import org.apache.rampart.RampartMessageData;
  */
 public class ConfermaClient
 {
-    private static final String ENDPOINT = "https://test-papi.conferma.com/v1_3/Service.asmx";
-
     private final int agentId;
     private final int bookerId;
     private final int clientId;
     private final Conferma_x0020_Payment_x0020_APIStub stub;
 
 
-    public ConfermaClient(String user,
+    /**
+     * @param endpoint The web service to connect to (different for test and live installations).
+     * @param user Conferma-supplied user name.
+     * @param password Conferma-supplied password.
+     * @param agentId Conferma-supplied agent ID.
+     * @param bookerId Conferma-supplied booker ID.
+     * @param clientId Conferma-supplied client ID.
+     * @throws XMLStreamException If there is a problem processing data from the web service.
+     * @throws AxisFault If there is a problem communicating with the web service.
+     */
+    public ConfermaClient(String endpoint,
+                          String user,
                           String password,
                           int agentId,
                           int bookerId,
@@ -60,14 +69,13 @@ public class ConfermaClient
         this.agentId = agentId;
         this.bookerId = bookerId;
         this.clientId = clientId;
-        this.stub = createStub(createOptions(user, password));
+        this.stub = createStub(createOptions(endpoint, user, password));
     }
 
-
-    private Options createOptions(String user, String password) throws XMLStreamException
+    private Options createOptions(String endpoint, String user, String password) throws XMLStreamException
     {
         Options options = new Options();
-        EndpointReference endpointReference = new EndpointReference(ENDPOINT);
+        EndpointReference endpointReference = new EndpointReference(endpoint);
         options.setTo(endpointReference);
         // Conferma requires the submission version of WS-Addressing, rather than the later, final version.
         options.setProperty(AddressingConstants.WS_ADDRESSING_VERSION, AddressingConstants.Submission.WSA_NAMESPACE);
@@ -85,7 +93,7 @@ public class ConfermaClient
 
     private Conferma_x0020_Payment_x0020_APIStub createStub(Options options) throws org.apache.axis2.AxisFault
     {
-        Conferma_x0020_Payment_x0020_APIStub stub = new Conferma_x0020_Payment_x0020_APIStub(ENDPOINT);
+        Conferma_x0020_Payment_x0020_APIStub stub = new Conferma_x0020_Payment_x0020_APIStub();
         stub._getServiceClient().setOptions(options);
         stub._getServiceClient().engageModule("addressing");
         stub._getServiceClient().engageModule("rampart");
