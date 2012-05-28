@@ -8,6 +8,7 @@ import com.conferma.cpapi.ArrayOfTraveller;
 import com.conferma.cpapi.Card;
 import com.conferma.cpapi.ConfermaUserStateHeader;
 import com.conferma.cpapi.ConfermaUserStateHeaderDocument;
+import com.conferma.cpapi.Customer;
 import com.conferma.cpapi.DateRange;
 import com.conferma.cpapi.GeneralPayee;
 import com.conferma.cpapi.GetCardDocument;
@@ -130,7 +131,8 @@ public class ConfermaClient
                        order.getPlusBus(),
                        order.getCustomer(),
                        order.getCostCentre(),
-                       order.getPurchaseOrderNumber());
+                       order.getPurchaseOrderNumber(),
+                       order.getBusiness());
     }
 
 
@@ -145,7 +147,8 @@ public class ConfermaClient
                        order.getPlusBus(),
                        order.getCustomer(),
                        order.getCostCentre(),
-                       order.getPurchaseOrderNumber());
+                       order.getPurchaseOrderNumber(),
+                       order.getBusiness());
     }
 
 
@@ -158,7 +161,8 @@ public class ConfermaClient
                                    BigDecimal plusBus,
                                    Person customer,
                                    String costCentre,
-                                   String purchaseOrderNumber) throws RemoteException
+                                   String purchaseOrderNumber,
+                                   Business business) throws RemoteException
     {
         GetCardDocument requestDocument = GetCardDocument.Factory.newInstance();
         GetCardDocument.GetCard getCard = requestDocument.addNewGetCard();
@@ -168,7 +172,7 @@ public class ConfermaClient
         cardRequest.setUseEmergencyCard(false);
 
         GeneralPayee general = cardRequest.addNewGeneral();
-        setGeneralDetails(general, orderDescription, consumerReference, orderValue);
+        setGeneralDetails(general, orderDescription, consumerReference, orderValue, business);
 
         Supplier supplier = cardRequest.addNewSupplier();
         addSupplierDetails(supplier, consumerReference);
@@ -205,7 +209,8 @@ public class ConfermaClient
     private void setGeneralDetails(GeneralPayee general,
                                    String orderDescription,
                                    String consumerReference,
-                                   BigDecimal orderValue)
+                                   BigDecimal orderValue,
+                                   Business business)
     {
         general.setName(orderDescription);
         general.setConsumerReference(consumerReference);
@@ -217,6 +222,12 @@ public class ConfermaClient
         Calendar threeDaysTime = Calendar.getInstance();
         threeDaysTime.add(Calendar.DAY_OF_YEAR, 3);
         paymentRange.setEndDate(threeDaysTime);
+        if (business != null)
+        {
+            Customer customer = general.addNewCustomer();
+            customer.setID(String.valueOf(business.getId()));
+            customer.setName(business.getName());
+        }
     }
 
 

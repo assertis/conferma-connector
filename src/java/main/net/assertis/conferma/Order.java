@@ -16,6 +16,7 @@ public class Order
     private final Person customer;
     private final String costCentre;
     private final String purchaseOrderNumber;
+    private final Business business;
 
     /**
      * @param id The order id.
@@ -30,6 +31,7 @@ public class Order
      * @param customer The customer who placed the order.
      * @param costCentre The (optional) cost centre for the order.
      * @param purchaseOrderNumber The (optional) purchase order number for the order.
+     * @param business The business that this order belongs to (may be null).
      */
     public Order(long id,
                  Trip trip,
@@ -39,7 +41,8 @@ public class Order
                  BigDecimal plusBus,
                  Person customer,
                  String costCentre,
-                 String purchaseOrderNumber)
+                 String purchaseOrderNumber,
+                 Business business)
     {
         this.id = id;
         this.trip = trip;
@@ -50,6 +53,7 @@ public class Order
         this.customer = customer;
         this.costCentre = costCentre;
         this.purchaseOrderNumber = purchaseOrderNumber;
+        this.business = business;
     }
 
 
@@ -96,5 +100,10 @@ public class Order
     public String getPurchaseOrderNumber()
     {
         return purchaseOrderNumber;
+    }
+
+    public Business getBusiness()
+    {
+        return business;
     }
 }

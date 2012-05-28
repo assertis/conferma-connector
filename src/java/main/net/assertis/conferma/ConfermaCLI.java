@@ -115,20 +115,20 @@ public class ConfermaCLI
 		DocumentBuilder builder = factory.newDocumentBuilder();
 		Document document = builder.parse(System.in);
         Element root = document.getDocumentElement();
-        confermaEndpoint = root.getAttributes().getNamedItem("endpoint").getNodeValue();
-        confermaUser = root.getAttributes().getNamedItem("user").getNodeValue();
-        confermaPassword = root.getAttributes().getNamedItem("password").getNodeValue();
-        confermaAgentId = Integer.parseInt(root.getAttributes().getNamedItem("agent").getNodeValue());
-        confermaBookerId = Integer.parseInt(root.getAttributes().getNamedItem("booker").getNodeValue());
-        confermaClientId = Integer.parseInt(root.getAttributes().getNamedItem("client").getNodeValue());
+        confermaEndpoint = root.getAttribute("endpoint");
+        confermaUser = root.getAttribute("user");
+        confermaPassword = root.getAttribute("password");
+        confermaAgentId = Integer.parseInt(root.getAttribute("agent"));
+        confermaBookerId = Integer.parseInt(root.getAttribute("booker"));
+        confermaClientId = Integer.parseInt(root.getAttribute("client"));
         if (root.getTagName().equals("Ping"))
         {
             requestType = RequestType.PING;
-            message = root.getAttributes().getNamedItem("message").getNodeValue();
+            message = root.getAttribute("message");
         }
         else
         {
-            requestType = root.getAttributes().getNamedItem("refund").getNodeValue().equalsIgnoreCase("YES")
+            requestType = root.getAttribute("refund").equalsIgnoreCase("YES")
                         ? RequestType.REFUND
                         : RequestType.PURCHASE;
             order = readOrder((Element) root.getElementsByTagName("Order").item(0));
@@ -139,30 +139,33 @@ public class ConfermaCLI
     {
         Trip trip = readTrip((Element) item.getElementsByTagName("Trip").item(0));
         Person customer = readPerson((Element) item.getElementsByTagName("Customer").item(0));
-        return new Order(Long.parseLong(item.getAttributes().getNamedItem("id").getNodeValue()),
+        NodeList businessTags = item.getElementsByTagName("Business");
+        Business business = businessTags.getLength() > 0 ? readBusiness((Element) businessTags.item(0)) : null;
+        return new Order(Long.parseLong(item.getAttribute("id")),
                          trip,
-                         new BigDecimal(item.getAttributes().getNamedItem("total").getNodeValue()),
-                         new BigDecimal(item.getAttributes().getNamedItem("bookingfee").getNodeValue()),
-                         new BigDecimal(item.getAttributes().getNamedItem("deliveryfee").getNodeValue()),
-                         new BigDecimal(item.getAttributes().getNamedItem("plusbus").getNodeValue()),
+                         new BigDecimal(item.getAttribute("total")),
+                         new BigDecimal(item.getAttribute("bookingfee")),
+                         new BigDecimal(item.getAttribute("deliveryfee")),
+                         new BigDecimal(item.getAttribute("plusbus")),
                          customer,
-                         item.getAttributes().getNamedItem("costcentre").getNodeValue(),
-                         item.getAttributes().getNamedItem("purchaseorder").getNodeValue());
+                         item.getAttribute("costcentre"),
+                         item.getAttribute("purchaseorder"),
+                         business);
     }
 
 
     private static Person readPerson(Element item)
     {
-        return new Person(item.getAttributes().getNamedItem("title").getNodeValue(),
-                          item.getAttributes().getNamedItem("forenames").getNodeValue(),
-                          item.getAttributes().getNamedItem("surname").getNodeValue());
+        return new Person(item.getAttribute("title"),
+                          item.getAttribute("forenames"),
+                          item.getAttribute("surname"));
     }
 
 
     private static Trip readTrip(Element item) throws ParseException
     {
-        TripType type = TripType.fromXMLValue(item.getAttributes().getNamedItem("type").getNodeValue());
-        int passengerCount = Integer.parseInt(item.getAttributes().getNamedItem("passengercount").getNodeValue());
+        TripType type = TripType.fromXMLValue(item.getAttribute("type"));
+        int passengerCount = Integer.parseInt(item.getAttribute("passengercount"));
         List<Ticket> tickets = new ArrayList<Ticket>();
         List<Person> passengers = new ArrayList<Person>();
         NodeList ticketElements = item.getElementsByTagName("Ticket");
@@ -188,20 +191,28 @@ public class ConfermaCLI
                               : null;
         return new Ticket(outwardPortion,
                           returnPortion,
-                          item.getAttributes().getNamedItem("firstclass").getNodeValue().equalsIgnoreCase("YES"),
-                          new BigDecimal(item.getAttributes().getNamedItem("price").getNodeValue()),
-                          item.getAttributes().getNamedItem("description").getNodeValue());
+                          item.getAttribute("firstclass").equalsIgnoreCase("YES"),
+                          new BigDecimal(item.getAttribute("price")),
+                          item.getAttribute("description"));
     }
 
 
     private static Portion readPortion(Element item) throws ParseException
     {
-        return new Portion(item.getAttributes().getNamedItem("origin").getNodeValue(),
-                           item.getAttributes().getNamedItem("destination").getNodeValue(),
-                           DATE_FORMAT.parse(item.getAttributes().getNamedItem("validfrom").getNodeValue()),
-                           DATE_FORMAT.parse(item.getAttributes().getNamedItem("validuntil").getNodeValue()),
-                           item.getAttributes().getNamedItem("operator").getNodeValue());
+        return new Portion(item.getAttribute("origin"),
+                           item.getAttribute("destination"),
+                           DATE_FORMAT.parse(item.getAttribute("validfrom")),
+                           DATE_FORMAT.parse(item.getAttribute("validuntil")),
+                           item.getAttribute("operator"));
     }
+
+
+    private static Business readBusiness(Element item)
+    {
+        return new Business(Integer.parseInt(item.getAttribute("id")),
+                            item.getAttribute("name"));
+    }
+
 
     private static enum RequestType
     {
