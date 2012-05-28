@@ -1,5 +1,6 @@
 package net.assertis.conferma;
 
+import com.conferma.cpapi.DeploymentStatus;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.DateFormat;
@@ -37,8 +38,10 @@ public class ConfermaCLI
 
     private static RequestType requestType;
 
-    private static String message;
     private static Order order;
+    private static int deploymentId;
+    private static DeploymentStatus.Enum deploymentStatus;
+    private static String message;
 
     public static void main(String[] args) throws XMLStreamException,
                                                   IOException,
@@ -67,6 +70,9 @@ public class ConfermaCLI
                 case REFUND:
                     System.out.println(client.getCardForRefund(order));
                     break;
+                case UPDATE_DEPLOYMENT:
+                    System.out.println(client.updateDeployment(deploymentId, deploymentStatus));
+                    break;
                 case PING:
                     System.out.println(client.ping(message));
                     break;
@@ -78,6 +84,7 @@ public class ConfermaCLI
             System.err.println(axisFault.getMessage());
         }
     }
+
 
     private static void configureLogging(boolean logXML)
     {
@@ -126,6 +133,20 @@ public class ConfermaCLI
             requestType = RequestType.PING;
             message = root.getAttribute("message");
         }
+        else if (root.getTagName().equals("UpdateDeployment"))
+        {
+            requestType = RequestType.UPDATE_DEPLOYMENT;
+            deploymentId = Integer.parseInt(root.getAttribute("id"));
+            String status = root.getAttribute("status");
+            if (status.equals("FailedWithSupplier"))
+            {
+                deploymentStatus = DeploymentStatus.FAILED_WITH_SUPPLIER;
+            }
+            else
+            {
+                throw new IllegalArgumentException("Unknown status: " + status);
+            }
+        }
         else
         {
             requestType = root.getAttribute("refund").equalsIgnoreCase("YES")
@@ -134,6 +155,7 @@ public class ConfermaCLI
             order = readOrder((Element) root.getElementsByTagName("Order").item(0));
         }
     }
+
 
     private static Order readOrder(Element item) throws ParseException
     {
@@ -218,6 +240,7 @@ public class ConfermaCLI
     {
         PURCHASE,
         REFUND,
+        UPDATE_DEPLOYMENT,
         PING
     }
 }

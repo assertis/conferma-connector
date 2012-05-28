@@ -10,6 +10,7 @@ import com.conferma.cpapi.ConfermaUserStateHeader;
 import com.conferma.cpapi.ConfermaUserStateHeaderDocument;
 import com.conferma.cpapi.Customer;
 import com.conferma.cpapi.DateRange;
+import com.conferma.cpapi.DeploymentStatus;
 import com.conferma.cpapi.GeneralPayee;
 import com.conferma.cpapi.GetCardDocument;
 import com.conferma.cpapi.GetCardRequest;
@@ -24,6 +25,9 @@ import com.conferma.cpapi.Rail;
 import com.conferma.cpapi.Supplier;
 import com.conferma.cpapi.TicketClass;
 import com.conferma.cpapi.Traveller;
+import com.conferma.cpapi.UpdateDeploymentDocument;
+import com.conferma.cpapi.UpdateDeploymentRequest;
+import com.conferma.cpapi.UpdateDeploymentResponseDocument;
 import java.math.BigDecimal;
 import java.rmi.RemoteException;
 import java.util.Calendar;
@@ -73,6 +77,7 @@ public class ConfermaClient
         this.stub = createStub(createOptions(endpoint, user, password));
     }
 
+
     private Options createOptions(String endpoint, String user, String password) throws XMLStreamException
     {
         Options options = new Options();
@@ -116,6 +121,29 @@ public class ConfermaClient
 
         PingResponseDocument response = stub.ping(request, createUserStateHeaderDocument(agentId, bookerId, clientId));
         return response.getPingResponse().getPingResult();
+    }
+
+
+    /**
+     * Update a previous deployment for a card.  Typically used to notify Conferma that the card wasn't charged
+     * because something went wrong.
+     * @param deploymentID The ID of the deployment.  This ID would have been acquired when the original deployment
+     * was made.
+     * @param status The new status for the deployment.
+     * @return True if the update succeeded, false otherwise.
+     * @throws RemoteException If there is a communication problem.
+     */
+    public boolean updateDeployment(int deploymentID, DeploymentStatus.Enum status) throws RemoteException
+    {
+        UpdateDeploymentDocument requestDocument = UpdateDeploymentDocument.Factory.newInstance();
+        UpdateDeploymentDocument.UpdateDeployment updateDeployment = requestDocument.addNewUpdateDeployment();
+        UpdateDeploymentRequest updateRequest = updateDeployment.addNewUpdateDeploymentRequest();
+        updateRequest.setDeploymentID(deploymentID);
+        updateRequest.setStatus(status);
+
+        ConfermaUserStateHeaderDocument headerDocument = createUserStateHeaderDocument(agentId, bookerId, clientId);
+        UpdateDeploymentResponseDocument responseDocument = stub.updateDeployment(requestDocument, headerDocument);
+        return responseDocument.getUpdateDeploymentResponse().getUpdateDeploymentResult().getUpdated();
     }
 
 
