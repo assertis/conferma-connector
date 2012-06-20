@@ -8,7 +8,6 @@ import com.conferma.cpapi.ArrayOfTraveller;
 import com.conferma.cpapi.Card;
 import com.conferma.cpapi.ConfermaUserStateHeader;
 import com.conferma.cpapi.ConfermaUserStateHeaderDocument;
-import com.conferma.cpapi.Customer;
 import com.conferma.cpapi.DateRange;
 import com.conferma.cpapi.DeploymentStatus;
 import com.conferma.cpapi.GeneralPayee;
@@ -31,6 +30,7 @@ import com.conferma.cpapi.UpdateDeploymentResponseDocument;
 import java.math.BigDecimal;
 import java.rmi.RemoteException;
 import java.util.Calendar;
+import java.util.List;
 import javax.xml.stream.XMLStreamException;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axis2.AxisFault;
@@ -158,8 +158,6 @@ public class ConfermaClient
                        order.getDeliveryFee(),
                        order.getPlusBus(),
                        order.getCustomer(),
-                       order.getCostCentre(),
-                       order.getPurchaseOrderNumber(),
                        order.getBusiness());
     }
 
@@ -174,8 +172,6 @@ public class ConfermaClient
                        order.getDeliveryFee(),
                        order.getPlusBus(),
                        order.getCustomer(),
-                       order.getCostCentre(),
-                       order.getPurchaseOrderNumber(),
                        order.getBusiness());
     }
 
@@ -187,9 +183,7 @@ public class ConfermaClient
                                    BigDecimal bookingFee,
                                    BigDecimal deliveryFee,
                                    BigDecimal plusBus,
-                                   Person customer,
-                                   String costCentre,
-                                   String purchaseOrderNumber,
+                                   Customer customer,
                                    Business business) throws RemoteException
     {
         GetCardDocument requestDocument = GetCardDocument.Factory.newInstance();
@@ -206,7 +200,7 @@ public class ConfermaClient
         addSupplierDetails(supplier, consumerReference);
 
         ArrayOfTraveller travellers = cardRequest.addNewTravellers();
-        addPassengerDetails(travellers, trip, customer);
+        addCustomerDetails(travellers, customer);
 
         Rail rail = cardRequest.addNewRail();
         addOutwardJourneyDetails(rail, trip);
@@ -214,11 +208,10 @@ public class ConfermaClient
 
         ArrayOfIdentifier identifiers = cardRequest.addNewIdentifiers();
         setIdentifierDetails(identifiers,
-                             costCentre,
-                             purchaseOrderNumber,
                              bookingFee,
                              deliveryFee,
-                             plusBus);
+                             plusBus,
+                             trip.getPassengers());
 
         GetCardResponseDocument responseDocument = stub.getCard(requestDocument,
                                                                 createUserStateHeaderDocument(agentId, bookerId, clientId));
@@ -252,7 +245,7 @@ public class ConfermaClient
         paymentRange.setEndDate(threeDaysTime);
         if (business != null)
         {
-            Customer customer = general.addNewCustomer();
+            com.conferma.cpapi.Customer customer = general.addNewCustomer();
             customer.setID(String.valueOf(business.getId()));
             customer.setName(business.getName());
         }
@@ -275,34 +268,14 @@ public class ConfermaClient
     }
 
 
-    private void addPassengerDetails(ArrayOfTraveller travellers, Trip trip, Person customer)
+    private void addCustomerDetails(ArrayOfTraveller travellers, Customer customer)
     {
-        if (trip.hasPassengerInfo())
-        {
-            for (Person passenger : trip.getPassengers())
-            {
-                Traveller traveller = travellers.addNewTraveller();
-                traveller.setSalutation(passenger.getTitle());
-                traveller.setForename(passenger.getForenames());
-                traveller.setSurname(passenger.getSurname());
-            }
-        }
         // If there isn't any passenger info captured for the order, the best we can do is send
         // the user's name to Conferma instead.
-        else
-        {
-            Traveller traveller = travellers.addNewTraveller();
-            traveller.setSalutation(customer.getTitle());
-            traveller.setForename(customer.getForenames());
-            traveller.setSurname(customer.getSurname());
-            for (int i = 2; i <= trip.getPassengerCount(); i++)
-            {
-                Traveller unknown = travellers.addNewTraveller();
-                unknown.setSalutation("");
-                unknown.setForename("");
-                unknown.setSurname("Passenger " + i);
-            }
-        }
+        Traveller traveller = travellers.addNewTraveller();
+        traveller.setSalutation(customer.getTitle());
+        traveller.setForename(customer.getForenames());
+        traveller.setSurname(customer.getSurname());
     }
 
 
@@ -369,24 +342,11 @@ public class ConfermaClient
 
 
     private void setIdentifierDetails(ArrayOfIdentifier identifiers,
-                                      String costCentre,
-                                      String purchaseOrderNumber,
                                       BigDecimal bookingFee,
                                       BigDecimal deliveryFee,
-                                      BigDecimal plusBus)
+                                      BigDecimal plusBus,
+                                      List<Passenger> passengers)
     {
-        if (costCentre != null && costCentre.length() > 0)
-        {
-            Identifier costCentreIdentifier = identifiers.addNewIdentifier();
-            costCentreIdentifier.setKey("Cost Centre");
-            costCentreIdentifier.setValue(costCentre);
-        }
-        if (purchaseOrderNumber != null && purchaseOrderNumber.length() > 0)
-        {
-            Identifier purchaseOrderIdentifier = identifiers.addNewIdentifier();
-            purchaseOrderIdentifier.setKey("Purchase Order");
-            purchaseOrderIdentifier.setValue(purchaseOrderNumber);
-        }
         // Slightly hacky way of sending extra info to Conferma, but it's what they asked for.
         if (bookingFee.compareTo(BigDecimal.ZERO) > 0)
         {
@@ -406,6 +366,26 @@ public class ConfermaClient
             plusBusIdentifier.setKey("PlusBus");
             plusBusIdentifier.setValue(plusBus.toPlainString());
         }
+        int index = 0;
+        for (Passenger passenger : passengers)
+        {
+            Identifier passengerIdentifier = identifiers.addNewIdentifier();
+            passengerIdentifier.setKey("Passenger " + (++index));
+            passengerIdentifier.setValue(passengerToIdentifierValue(passenger));
+        }
+    }
+
+    private String passengerToIdentifierValue(Passenger passenger)
+    {
+        StringBuilder builder = new StringBuilder(passenger.getName());
+        List<String> costCentres = passenger.getCostCentres();
+        for (String costCentre : costCentres)
+        {
+            builder.append("//");
+            // Double forward slash is used as a separator so it mustn't occur in the string.
+            builder.append(costCentre.replaceAll("//+", "/"));
+        }
+        return builder.toString();
     }
 
 

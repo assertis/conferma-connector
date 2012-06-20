@@ -13,9 +13,7 @@ public class Order
     private final BigDecimal bookingFee;
     private final BigDecimal deliveryFee;
     private final BigDecimal plusBus;
-    private final Person customer;
-    private final String costCentre;
-    private final String purchaseOrderNumber;
+    private final Customer customer;
     private final Business business;
 
     /**
@@ -29,8 +27,6 @@ public class Order
      * types).
      * @param plusBus The cost of any PlusBus tickets.
      * @param customer The customer who placed the order.
-     * @param costCentre The (optional) cost centre for the order.
-     * @param purchaseOrderNumber The (optional) purchase order number for the order.
      * @param business The business that this order belongs to (may be null).
      */
     public Order(long id,
@@ -39,9 +35,7 @@ public class Order
                  BigDecimal bookingFee,
                  BigDecimal deliveryFee,
                  BigDecimal plusBus,
-                 Person customer,
-                 String costCentre,
-                 String purchaseOrderNumber,
+                 Customer customer,
                  Business business)
     {
         this.id = id;
@@ -51,8 +45,6 @@ public class Order
         this.deliveryFee = deliveryFee;
         this.plusBus = plusBus;
         this.customer = customer;
-        this.costCentre = costCentre;
-        this.purchaseOrderNumber = purchaseOrderNumber;
         this.business = business;
     }
 
@@ -87,19 +79,9 @@ public class Order
         return plusBus;
     }
 
-    public Person getCustomer()
+    public Customer getCustomer()
     {
         return customer;
-    }
-
-    public String getCostCentre()
-    {
-        return costCentre;
-    }
-
-    public String getPurchaseOrderNumber()
-    {
-        return purchaseOrderNumber;
     }
 
     public Business getBusiness()

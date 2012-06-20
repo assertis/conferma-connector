@@ -3,13 +3,13 @@ package net.assertis.conferma;
 /**
  * @author Daniel Dyer
  */
-public final class Person
+public final class Customer
 {
     private final String title;
     private final String forenames;
     private final String surname;
 
-    public Person(String title, String forenames, String surname)
+    public Customer(String title, String forenames, String surname)
     {
         this.title = title;
         this.forenames = forenames;

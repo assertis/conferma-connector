@@ -7,6 +7,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 import javax.xml.parsers.DocumentBuilder;
@@ -160,7 +161,7 @@ public class ConfermaCLI
     private static Order readOrder(Element item) throws ParseException
     {
         Trip trip = readTrip((Element) item.getElementsByTagName("Trip").item(0));
-        Person customer = readPerson((Element) item.getElementsByTagName("Customer").item(0));
+        Customer customer = readCustomer((Element) item.getElementsByTagName("Customer").item(0));
         NodeList businessTags = item.getElementsByTagName("Business");
         Business business = businessTags.getLength() > 0 ? readBusiness((Element) businessTags.item(0)) : null;
         return new Order(Long.parseLong(item.getAttribute("id")),
@@ -170,26 +171,30 @@ public class ConfermaCLI
                          new BigDecimal(item.getAttribute("deliveryfee")),
                          new BigDecimal(item.getAttribute("plusbus")),
                          customer,
-                         item.getAttribute("costcentre"),
-                         item.getAttribute("purchaseorder"),
                          business);
     }
 
 
-    private static Person readPerson(Element item)
+    private static Customer readCustomer(Element item)
     {
-        return new Person(item.getAttribute("title"),
-                          item.getAttribute("forenames"),
-                          item.getAttribute("surname"));
+        return new Customer(item.getAttribute("title"),
+                            item.getAttribute("forenames"),
+                            item.getAttribute("surname"));
     }
 
+
+    private static Passenger readPassenger(Element item)
+    {
+        return new Passenger(item.getAttribute("name"),
+                             Arrays.asList(item.getAttribute("costcentres").split(",")));
+    }
 
     private static Trip readTrip(Element item) throws ParseException
     {
         TripType type = TripType.fromXMLValue(item.getAttribute("type"));
         int passengerCount = Integer.parseInt(item.getAttribute("passengercount"));
         List<Ticket> tickets = new ArrayList<Ticket>();
-        List<Person> passengers = new ArrayList<Person>();
+        List<Passenger> passengers = new ArrayList<Passenger>();
         NodeList ticketElements = item.getElementsByTagName("Ticket");
         for (int i = 0; i < ticketElements.getLength(); i++)
         {
@@ -198,7 +203,7 @@ public class ConfermaCLI
         NodeList passengerElements = item.getElementsByTagName("Passenger");
         for (int i = 0; i < passengerElements.getLength(); i++)
         {
-            passengers.add(readPerson((Element) passengerElements.item(i)));
+            passengers.add(readPassenger((Element) passengerElements.item(i)));
         }
         return new Trip(type, tickets, passengerCount, passengers);
     }

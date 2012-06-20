@@ -10,7 +10,7 @@ public class Trip
     private final TripType type;
     private final List<Ticket> tickets;
     private final int passengerCount;
-    private final List<Person> passengers;
+    private final List<Passenger> passengers;
 
     /**
      * @param type The type of trip (single, return, two singles).
@@ -22,7 +22,7 @@ public class Trip
     public Trip(TripType type,
                 List<Ticket> tickets,
                 int passengerCount,
-                List<Person> passengers)
+                List<Passenger> passengers)
     {
         this.type = type;
         this.tickets = tickets;
@@ -73,7 +73,7 @@ public class Trip
     }
 
 
-    public List<Person> getPassengers()
+    public List<Passenger> getPassengers()
     {
         return passengers;
     }
