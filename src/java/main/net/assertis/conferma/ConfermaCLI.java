@@ -38,6 +38,7 @@ public class ConfermaCLI
     private static int confermaClientId;
 
     private static RequestType requestType;
+    private static String retryCount; // Uniquifier for requests.
 
     private static Order order;
     private static int deploymentId;
@@ -66,10 +67,10 @@ public class ConfermaCLI
             switch (requestType)
             {
                 case PURCHASE:
-                    System.out.println(client.getCardForPayment(order));
+                    System.out.println(client.getCardForPayment(order, retryCount));
                     break;
                 case REFUND:
-                    System.out.println(client.getCardForRefund(order));
+                    System.out.println(client.getCardForRefund(order, retryCount));
                     break;
                 case UPDATE_DEPLOYMENT:
                     System.out.println(client.updateDeployment(deploymentId, deploymentStatus));
@@ -129,6 +130,7 @@ public class ConfermaCLI
         confermaAgentId = Integer.parseInt(root.getAttribute("agent"));
         confermaBookerId = Integer.parseInt(root.getAttribute("booker"));
         confermaClientId = Integer.parseInt(root.getAttribute("client"));
+        retryCount = root.getAttribute("retrycount");
         if (root.getTagName().equals("Ping"))
         {
             requestType = RequestType.PING;

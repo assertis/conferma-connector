@@ -147,11 +147,16 @@ public class ConfermaClient
     }
 
 
-    public CardDeployment getCardForPayment(Order order) throws RemoteException
+    public CardDeployment getCardForPayment(Order order, String uniquifier) throws RemoteException
 
     {
+        String id = String.valueOf(order.getId());
+        if (uniquifier != null && uniquifier.length() > 0)
+        {
+            id = id + "-" + uniquifier;
+        }
         return getCard(order.getTrip().getDescription(),
-                       String.valueOf(order.getId()),
+                       id,
                        order.getTrip(),
                        order.getTotal(),
                        order.getBookingFee(),
@@ -162,10 +167,15 @@ public class ConfermaClient
     }
 
 
-    public CardDeployment getCardForRefund(Order order) throws RemoteException
+    public CardDeployment getCardForRefund(Order order, String uniquifier) throws RemoteException
     {
+        String id = order.getId() + "-Refund";
+        if (uniquifier != null && uniquifier.length() > 0)
+        {
+            id = id + "-" + uniquifier;
+        }
         return getCard("Refund for Order #" + order.getId(),
-                       order.getId() + "-Refund",
+                       id,
                        order.getTrip(),
                        order.getTotal(),
                        order.getBookingFee(),
