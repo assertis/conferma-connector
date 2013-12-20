@@ -67,10 +67,10 @@ public class ConfermaCLI
             switch (requestType)
             {
                 case PURCHASE:
-                    System.out.println(client.getCardForPayment(order, retryCount));
+                    System.out.println(client.getCardForPayment(order));
                     break;
                 case REFUND:
-                    System.out.println(client.getCardForRefund(order, retryCount));
+                    System.out.println(client.getCardForRefund(order));
                     break;
                 case UPDATE_DEPLOYMENT:
                     System.out.println(client.updateDeployment(deploymentId, deploymentStatus));
