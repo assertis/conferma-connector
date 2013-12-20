@@ -215,16 +215,15 @@ public class ConfermaClient
                                   card.getCVV());
     }
 
-    private CardDeployment getDeployment(String deploymentID) throws RemoteException
+    CardDeployment getDeployment(int deploymentId) throws RemoteException
     {
         GetDeploymentDocument requestDocument = GetDeploymentDocument.Factory.newInstance();
-        GetDeploymentDocument.GetDeployment getDeployment = requestDocument.addNewGetDeploymentRequest();
-        GetDeploymentRequest deploymentRequest = getDeployment.getGetDeployment();
-        deploymentRequest.setType(PayeeType.Enum.forString("Rail"));
-        deploymentRequest.setDeploymentID(deploymentID);
+        GetDeploymentDocument.GetDeployment getDeployment = requestDocument.addNewGetDeployment();
+        GetDeploymentRequest deploymentRequest = getDeployment.getGetDeploymentRequest();
+        deploymentRequest.setDeploymentID(deploymentId);
         deploymentRequest.setReturnCVV(true);
 
-        GetCardResponseDocument responseDocument = stub.getDeployment(requestDocument,
+        GetDeploymentResponseDocument responseDocument = stub.getDeployment(requestDocument,
                                                                 createUserStateHeaderDocument(agentId, bookerId, clientId));
         GetDeploymentResponse response = responseDocument.getGetDeploymentResponse().getGetDeploymentResult();
         Card card = response.getCard();
