@@ -72,6 +72,8 @@ public class ConfermaCLI
                 case REFUND:
                     System.out.println(client.getDeployment(deploymentId));
                     break;
+                case GET_DEPLOYMENT:
+                    System.out.println(client.getDeployment(deploymentId))
                 case UPDATE_DEPLOYMENT:
                     System.out.println(client.updateDeployment(deploymentId, deploymentStatus));
                     break;
@@ -135,6 +137,11 @@ public class ConfermaCLI
         {
             requestType = RequestType.PING;
             message = root.getAttribute("message");
+        }
+        else if (root.getTagName().equals("GetDeployment"))
+        {
+            requestType = RequestType.GET_DEPLOYMENT;
+            deploymentId = Integer.parseInt(root.getAttribute("id"));
         }
         else if (root.getTagName().equals("UpdateDeployment"))
         {
