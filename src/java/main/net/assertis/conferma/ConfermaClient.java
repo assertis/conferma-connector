@@ -214,43 +214,23 @@ public class ConfermaClient
     private CardDeployment getDeployment(String deploymentID) throws RemoteException
     {
         GetDeploymentDocument requestDocument = GetDeploymentDocument.Factory.newInstance();
-        // GetDeploymentDocument.GetDeployment getDeployment = requestDocument.getGetDeployment();
-        // GetDeploymentRequest deploymentRequest = getCard.addNewGetCardRequest();
-        // cardRequest.setType(PayeeType.Enum.forString("Rail"));
-        // cardRequest.setReturnCVV(true);
-        // cardRequest.setUseEmergencyCard(false);
+        GetDeploymentDocument.GetDeployment getDeployment = requestDocument.addNewGetDeploymentRequest();
+        GetDeploymentRequest deploymentRequest = getDeployment.getGetDeployment();
+        deploymentRequest.setType(PayeeType.Enum.forString("Rail"));
+        deploymentRequest.setDeploymentID(deploymentID);
+        deploymentRequest.setReturnCVV(true);
 
-        // GeneralPayee general = cardRequest.addNewGeneral();
-        // setGeneralDetails(general, orderDescription, consumerReference, orderValue, business);
-
-        // Supplier supplier = cardRequest.addNewSupplier();
-        // addSupplierDetails(supplier, consumerReference);
-
-        // ArrayOfTraveller travellers = cardRequest.addNewTravellers();
-        // addCustomerDetails(travellers, customer);
-
-        // Rail rail = cardRequest.addNewRail();
-        // addOutwardJourneyDetails(rail, trip);
-        // addReturnJourneyDetails(rail, trip);
-
-        // ArrayOfIdentifier identifiers = cardRequest.addNewIdentifiers();
-        // setIdentifierDetails(identifiers,
-        //                      bookingFee,
-        //                      deliveryFee,
-        //                      plusBus,
-        //                      trip.getPassengers());
-
-        // GetCardResponseDocument responseDocument = stub.getCard(requestDocument,
-        //                                                         createUserStateHeaderDocument(agentId, bookerId, clientId));
-        // GetCardResponse response = responseDocument.getGetCardResponse().getGetCardResult();
-        // Card card = response.getCard();
-        // return new CardDeployment(response.getDeploymentID(),
-        //                           card.getName(),
-        //                           card.getType(),
-        //                           card.getNumber(),
-        //                           card.getExpiryDate().getMonth(),
-        //                           card.getExpiryDate().getYear(),
-        //                           card.getCVV());
+        GetCardResponseDocument responseDocument = stub.getDeployment(requestDocument,
+                                                                createUserStateHeaderDocument(agentId, bookerId, clientId));
+        GetDeploymentResponse response = responseDocument.getGetDeploymentResponse().getGetDeploymentResult();
+        Card card = response.getCard();
+        return new CardDeployment(response.getDeploymentID(),
+                                  card.getName(),
+                                  card.getType(),
+                                  card.getNumber(),
+                                  card.getExpiryDate().getMonth(),
+                                  card.getExpiryDate().getYear(),
+                                  card.getCVV());
     }
 
 
