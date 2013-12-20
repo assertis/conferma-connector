@@ -423,9 +423,7 @@
                      * Returns a previously deployed card based on DeploymentID.
                      * @see net.assertis.conferma.Conferma_x0020_Payment_x0020_API#getDeployment
                      * @param getDeployment
-                    
                      * @param confermaUserStateHeader0
-                    
                      */
 
                     
@@ -1088,13 +1086,8 @@
                      * Returns a card, for use in your own processes.
                      * @see net.assertis.conferma.Conferma_x0020_Payment_x0020_API#getCard
                      * @param getCard
-                    
                      * @param confermaUserStateHeader5
-                    
                      */
-
-                    
-
                             public  com.conferma.cpapi.GetCardResponseDocument getCard(
 
                             com.conferma.cpapi.GetCardDocument getCard,com.conferma.cpapi.ConfermaUserStateHeaderDocument confermaUserStateHeader5)
