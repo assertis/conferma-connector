@@ -70,7 +70,7 @@ public class ConfermaCLI
                     System.out.println(client.getCardForPayment(order));
                     break;
                 case REFUND:
-                    System.out.println(client.getCardForRefund(order));
+                    System.out.println(client.getDeployment(deploymentId));
                     break;
                 case UPDATE_DEPLOYMENT:
                     System.out.println(client.updateDeployment(deploymentId, deploymentStatus));
