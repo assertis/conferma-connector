@@ -73,7 +73,7 @@ public class ConfermaCLI
                     System.out.println(client.getDeployment(deploymentId));
                     break;
                 case GET_DEPLOYMENT:
-                    System.out.println(client.getDeployment(deploymentId))
+                    System.out.println(client.getDeployment(deploymentId));
                 case UPDATE_DEPLOYMENT:
                     System.out.println(client.updateDeployment(deploymentId, deploymentStatus));
                     break;
@@ -254,6 +254,7 @@ public class ConfermaCLI
     {
         PURCHASE,
         REFUND,
+        GET_DEPLOYMENT,
         UPDATE_DEPLOYMENT,
         PING
     }
