@@ -38,7 +38,6 @@ public class ConfermaCLI
     private static int confermaClientId;
 
     private static RequestType requestType;
-    private static String retryCount; // Uniquifier for requests.
 
     private static Order order;
     private static int deploymentId;
@@ -69,11 +68,9 @@ public class ConfermaCLI
                 case PURCHASE:
                     System.out.println(client.getCardForPayment(order));
                     break;
-                case REFUND:
-                    System.out.println(client.getDeployment(deploymentId));
-                    break;
                 case GET_DEPLOYMENT:
                     System.out.println(client.getDeployment(deploymentId));
+                    break;
                 case UPDATE_DEPLOYMENT:
                     System.out.println(client.updateDeployment(deploymentId, deploymentStatus));
                     break;
@@ -132,7 +129,6 @@ public class ConfermaCLI
         confermaAgentId = Integer.parseInt(root.getAttribute("agent"));
         confermaBookerId = Integer.parseInt(root.getAttribute("booker"));
         confermaClientId = Integer.parseInt(root.getAttribute("client"));
-        retryCount = root.getAttribute("retrycount");
         if (root.getTagName().equals("Ping"))
         {
             requestType = RequestType.PING;
@@ -159,9 +155,7 @@ public class ConfermaCLI
         }
         else
         {
-            requestType = root.getAttribute("refund").equalsIgnoreCase("YES")
-                        ? RequestType.REFUND
-                        : RequestType.PURCHASE;
+            requestType = RequestType.PURCHASE;
             order = readOrder((Element) root.getElementsByTagName("Order").item(0));
         }
     }
@@ -253,7 +247,6 @@ public class ConfermaCLI
     private static enum RequestType
     {
         PURCHASE,
-        REFUND,
         GET_DEPLOYMENT,
         UPDATE_DEPLOYMENT,
         PING

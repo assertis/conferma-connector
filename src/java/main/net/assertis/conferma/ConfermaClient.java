@@ -31,11 +31,17 @@ import com.conferma.cpapi.GetDeploymentDocument;
 import com.conferma.cpapi.GetDeploymentRequest;
 import com.conferma.cpapi.GetDeploymentResponse;
 import com.conferma.cpapi.GetDeploymentResponseDocument;
+
 import java.math.BigDecimal;
 import java.rmi.RemoteException;
 import java.util.Calendar;
 import java.util.List;
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
+
 import javax.xml.stream.XMLStreamException;
+
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axis2.AxisFault;
 import org.apache.axis2.addressing.AddressingConstants;
@@ -56,6 +62,8 @@ public class ConfermaClient
     private final int bookerId;
     private final int clientId;
     private final Conferma_x0020_Payment_x0020_APIStub stub;
+    
+    private final Logger logger;
 
 
     /**
@@ -79,6 +87,18 @@ public class ConfermaClient
         this.bookerId = bookerId;
         this.clientId = clientId;
         this.stub = createStub(createOptions(endpoint, user, password));
+        
+        logger = Logger.getLogger("ConfermaClient");  
+        FileHandler fh;
+
+        try {  
+            fh = new FileHandler("ConfermaClient.log");  
+            logger.addHandler(fh);
+            SimpleFormatter formatter = new SimpleFormatter();  
+            fh.setFormatter(formatter);  
+        } catch (Exception e) {  
+            e.printStackTrace();  
+        }
     }
 
 
@@ -215,11 +235,12 @@ public class ConfermaClient
                                   card.getCVV());
     }
 
-    CardDeployment getDeployment(int deploymentId) throws RemoteException
+    public CardDeployment getDeployment(int deploymentId) throws RemoteException
     {
-        GetDeploymentDocument requestDocument = GetDeploymentDocument.Factory.newInstance();
+    	GetDeploymentDocument requestDocument = GetDeploymentDocument.Factory.newInstance();
         GetDeploymentDocument.GetDeployment getDeployment = requestDocument.addNewGetDeployment();
-        GetDeploymentRequest deploymentRequest = getDeployment.getGetDeploymentRequest();
+        GetDeploymentRequest deploymentRequest = getDeployment.getGetDeploymentRequest(); // TODO: returns NULL
+        
         deploymentRequest.setDeploymentID(deploymentId);
         deploymentRequest.setReturnCVV(true);
 
