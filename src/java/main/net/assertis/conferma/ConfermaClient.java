@@ -89,7 +89,7 @@ public class ConfermaClient
         this.stub = createStub(createOptions(endpoint, user, password));
         
         logger = Logger.getLogger("ConfermaClient");  
-        FileHandler fh;
+        FileHandler fh;  
 
         try {  
             fh = new FileHandler("ConfermaClient.log");  
@@ -239,16 +239,16 @@ public class ConfermaClient
     {
     	GetDeploymentDocument requestDocument = GetDeploymentDocument.Factory.newInstance();
         GetDeploymentDocument.GetDeployment getDeployment = requestDocument.addNewGetDeployment();
-        GetDeploymentRequest deploymentRequest = getDeployment.getGetDeploymentRequest(); // TODO: returns NULL
-        
-        deploymentRequest.setDeploymentID(deploymentId);
-        deploymentRequest.setReturnCVV(true);
+        GetDeploymentRequest getRequest = getDeployment.addNewGetDeploymentRequest();
+        getRequest.setDeploymentID(deploymentId);
+        getRequest.setReturnCVV(true);
 
         GetDeploymentResponseDocument responseDocument = stub.getDeployment(requestDocument,
                                                                 createUserStateHeaderDocument(agentId, bookerId, clientId));
         GetDeploymentResponse response = responseDocument.getGetDeploymentResponse().getGetDeploymentResult();
         Card card = response.getCard();
-        return new CardDeployment(response.getDeploymentID(),
+        
+        return new CardDeployment(deploymentId,
                                   card.getName(),
                                   card.getType(),
                                   card.getNumber(),
