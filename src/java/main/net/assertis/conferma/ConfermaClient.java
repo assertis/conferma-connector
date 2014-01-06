@@ -36,9 +36,6 @@ import java.math.BigDecimal;
 import java.rmi.RemoteException;
 import java.util.Calendar;
 import java.util.List;
-import java.util.logging.FileHandler;
-import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -62,8 +59,6 @@ public class ConfermaClient
     private final int bookerId;
     private final int clientId;
     private final Conferma_x0020_Payment_x0020_APIStub stub;
-    
-    private final Logger logger;
 
 
     /**
@@ -87,18 +82,6 @@ public class ConfermaClient
         this.bookerId = bookerId;
         this.clientId = clientId;
         this.stub = createStub(createOptions(endpoint, user, password));
-        
-        logger = Logger.getLogger("ConfermaClient");  
-        FileHandler fh;  
-
-        try {  
-            fh = new FileHandler("ConfermaClient.log");  
-            logger.addHandler(fh);
-            SimpleFormatter formatter = new SimpleFormatter();  
-            fh.setFormatter(formatter);  
-        } catch (Exception e) {  
-            e.printStackTrace();  
-        }
     }
 
 
