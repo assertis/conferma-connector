@@ -150,7 +150,8 @@ public class ConfermaClient
     public CardDeployment getCardForPayment(Order order, String uniquifier) throws RemoteException
 
     {
-        String id = String.valueOf(order.getId());
+        String id = order.getCustomer().getForenames() + "_" + order.getCustomer().getSurname() + "_" + String.valueOf(order.getId()); 
+
         if (uniquifier != null && uniquifier.length() > 0)
         {
             id = id + "-" + uniquifier;
